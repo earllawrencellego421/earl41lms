@@ -1,0 +1,20 @@
+earl41lms/
+├── Capstone Project 1/
+│   ├── EXAMPCP1.png
+│   └── QUIZCP1.png
+├── IT Practicum/
+│   ├── EXAMIT.png
+│   └── QUIZIT.png
+├── Load Testing/
+│   ├── EXAMLT.png
+│   └── QUIZLT.png
+├── Mail and Web Services/
+│   ├── EXAMMWS.png
+│   └── QUIZMWS.png
+├── Readings in Philippine History/
+│   ├── EXAM1RPH.png
+│   ├── EXAM2RPH.png
+│   └── QUIZRPH.png
+└── Software Engineering 1/
+    ├── EXAMSE1.png
+    └── QUIZSE1.png

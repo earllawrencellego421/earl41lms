@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8b5a2b">
+<title>earl41 LMS · Exams and Quizzes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea-top:#8fe1f7; --sea:#3bb4e5; --sea-deep:#0d6fa8; --abyss:#06385a;
+  --sponge:#ffe033; --sponge-dk:#f2c200; --hole:#e3ad00;
+  --plank:#8b5a2b; --plank-dk:#6b4119; --ink:#3a2410;
+  --krab:#e8402f; --sand:#f6dfa3; --pink:#ff8fb8; --white:#fffdf5;
+  --display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);line-height:1.5;min-height:100vh;font-weight:500;
+  background:linear-gradient(180deg,var(--sea-top) 0,var(--sea) 420px,var(--sea-deep) 1400px,var(--abyss) 100%) fixed;
+  padding:env(safe-area-inset-right) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+:focus-visible{outline:4px solid var(--krab);outline-offset:3px}
+.wrap{width:min(1180px,100% - 2rem);margin-inline:auto}
+
+/* Krusty-Krab-style plank header */
+header.bar{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top);
+  background:repeating-linear-gradient(0deg,var(--plank) 0 22px,var(--plank-dk) 22px 24px);
+  border-bottom:5px solid var(--plank-dk);box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.55rem}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--white)}
+.brand b{font-family:var(--display);font-weight:400;font-size:1.5rem;letter-spacing:.02em;text-shadow:0 3px 0 var(--plank-dk)}
+.brand b span{color:var(--sponge)}
+.porthole{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bff0ff,var(--sea));border:5px solid var(--sand);box-shadow:inset 0 0 0 3px var(--plank-dk),0 3px 0 var(--plank-dk);display:grid;place-items:center;font-family:var(--display);color:var(--white);font-size:1rem}
+.bar small{color:var(--sand);font-weight:700}
+
+/* hero */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:2;padding-block:clamp(2.2rem,6vw,4.5rem) clamp(3.5rem,8vw,6rem);text-align:center}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(2.6rem,9vw,6rem);line-height:1;color:var(--sponge);
+  -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 6px 0 var(--ink);transform:rotate(-2deg);display:inline-block}
+.hero h1 small{display:block;font-size:.5em;color:var(--white);margin-top:.3em;-webkit-text-stroke:2.5px var(--ink);text-shadow:0 4px 0 var(--ink);transform:rotate(1.5deg)}
+.hero p{max-width:44ch;margin:1.6rem auto 0;font-size:1.15rem;font-weight:700;color:var(--white);text-shadow:0 2px 0 rgba(6,56,90,.5)}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:1.6rem}
+.stats div{background:var(--white);border:4px solid var(--ink);border-radius:18px;padding:.3rem 1.1rem;box-shadow:0 5px 0 var(--ink)}
+.stats strong{font-family:var(--display);font-weight:400;font-size:1.8rem;color:var(--krab);display:block;line-height:1.1}
+.stats span{font-size:.85rem;font-weight:700}
+.wave{position:absolute;left:0;right:0;bottom:-1px;height:48px;z-index:1;width:100%}
+.bubbles{position:absolute;inset:0;z-index:1;pointer-events:none}
+.bubbles i{position:absolute;bottom:-40px;border-radius:50%;border:3px solid rgba(255,255,255,.8);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.7),rgba(255,255,255,.1));animation:rise 9s linear infinite}
+@keyframes rise{to{transform:translateY(-620px) translateX(20px);opacity:0}}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;padding-block:1.2rem 1.6rem}
+.search{flex:1 1 240px}
+.search input{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--white);border:4px solid var(--ink);border-radius:999px;padding:.65rem 1.3rem;box-shadow:0 5px 0 var(--ink)}
+.search input::placeholder{color:#7a6650}
+.search input:focus{outline:4px solid var(--krab);outline-offset:2px}
+.chips{display:flex;gap:.55rem}
+.chip{font:inherit;font-weight:800;color:var(--ink);background:var(--white);border:4px solid var(--ink);border-radius:999px;padding:.4rem 1.2rem;min-height:48px;cursor:pointer;box-shadow:0 5px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.chip:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.chip[aria-pressed=true]{background:var(--sponge)}
+
+/* sponge cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1.6rem;padding-bottom:4rem}
+.card{position:relative;border:5px solid var(--ink);border-radius:26px 26px 18px 18px;padding:1.1rem 1.1rem 1.3rem;display:flex;flex-direction:column;gap:1rem;box-shadow:0 8px 0 var(--ink);
+  background:
+   radial-gradient(circle at 12% 30%,var(--hole) 0 7px,transparent 8px),
+   radial-gradient(circle at 88% 18%,var(--hole) 0 5px,transparent 6px),
+   radial-gradient(circle at 92% 78%,var(--hole) 0 9px,transparent 10px),
+   radial-gradient(circle at 6% 88%,var(--hole) 0 5px,transparent 6px),
+   var(--sponge)}
+.card:nth-child(even){transform:rotate(.6deg)}
+.card:nth-child(odd){transform:rotate(-.6deg)}
+.card header{display:flex;gap:.9rem;align-items:center}
+.patch{flex:none;width:62px;height:62px;border-radius:50%;background:var(--krab);border:5px solid var(--white);box-shadow:0 0 0 4px var(--ink);display:grid;place-items:center;font-family:var(--display);font-size:1rem;color:var(--white);text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.card h2{font-family:var(--display);font-weight:400;font-size:1.35rem;line-height:1.15}
+.card header p{font-size:.88rem;font-weight:700;color:#6b4a14}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem}
+.thumb{position:relative;display:block;padding:0;border:4px solid var(--ink);border-radius:14px;background:var(--white);cursor:pointer;aspect-ratio:4/3;overflow:hidden;transition:transform .15s;box-shadow:0 4px 0 var(--ink)}
+.thumb:hover,.thumb:focus-visible{transform:translateY(-4px) rotate(-1.5deg)}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb span{position:absolute;left:8px;bottom:8px;padding:.1rem .7rem;font-family:var(--display);font-size:.95rem;border:3px solid var(--ink);border-radius:999px;color:var(--white)}
+.thumb.exam span{background:var(--krab)}
+.thumb.quiz span{background:var(--sea-deep)}
+.thumb.missing{display:grid;place-items:center;font-weight:700;font-size:.85rem;text-align:center;padding:.5rem}
+.empty{grid-column:1/-1;text-align:center;padding:2.5rem 1rem;font-weight:800;font-size:1.1rem;color:var(--ink);background:var(--white);border:5px dashed var(--ink);border-radius:26px}
+footer{background:var(--sand);border-top:6px solid var(--plank-dk);padding:1.4rem 0 2.2rem;font-weight:700;text-align:center}
+
+/* viewer */
+dialog{border:0;padding:0;width:100%;max-width:none;height:100%;max-height:none;color:var(--white);
+  background:linear-gradient(180deg,var(--sea-deep),var(--abyss))}
+dialog::backdrop{background:var(--abyss)}
+.viewer{display:grid;grid-template-rows:auto 1fr auto;height:100%;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.vtop,.vbot{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;background:repeating-linear-gradient(0deg,var(--plank) 0 22px,var(--plank-dk) 22px 24px)}
+.vtop{border-bottom:5px solid var(--plank-dk)}
+.vbot{border-top:5px solid var(--plank-dk);flex-wrap:wrap;justify-content:space-between}
+.vtop h3{flex:1;min-width:0;font-family:var(--display);font-weight:400;font-size:1.25rem;text-shadow:0 2px 0 var(--plank-dk)}
+.vtop h3 small{display:block;font-family:var(--body);font-weight:800;font-size:.85rem;color:var(--sponge)}
+.btn{font:inherit;font-weight:800;color:var(--ink);background:var(--white);border:4px solid var(--ink);border-radius:999px;padding:.3rem 1rem;min-height:48px;min-width:48px;cursor:pointer;text-decoration:none;display:inline-grid;place-items:center;box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.close{background:var(--krab);color:var(--white)}
+.stage{overflow:auto;display:grid;place-items:center;padding:1rem;touch-action:pan-x pan-y pinch-zoom}
+.stage img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in;background:var(--white);border:6px solid var(--white);border-radius:12px;box-shadow:0 0 0 4px var(--ink),0 12px 0 4px rgba(0,0,0,.3)}
+.stage.full{place-items:start center}
+.stage.full img{max-width:none;max-height:none;cursor:zoom-out}
+.tabs{display:flex;gap:.5rem;overflow-x:auto;padding:4px 4px 8px}
+.tab{flex:none;font:inherit;font-weight:800;color:var(--ink);background:var(--white);border:4px solid var(--ink);border-radius:999px;padding:.3rem 1.1rem;min-height:48px;cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.tab[aria-selected=true]{background:var(--sponge)}
+.acts{display:flex;gap:.5rem}
+
+@media (max-width:640px){
+  .bar small{display:none}
+  .btn .lbl{display:none}
+  .vbot{justify-content:center}
+  .card:nth-child(n){transform:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="earl41 LMS home">
+      <div class="porthole" aria-hidden="true">e41</div>
+      <b>earl41<span>LMS</span></b>
+    </a>
+    <small>Exam and quiz reviewer</small>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="bubbles" aria-hidden="true" id="bubbles"></div>
+    <div class="wrap">
+      <h1>Dive in and<small>ace every exam!</small></h1>
+      <p>Pick a subject, open the exam or quiz sheet, and review it on any screen. No sign-in needed.</p>
+      <div class="stats" id="stats" aria-label="Library totals"></div>
+    </div>
+    <svg class="wave" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 Q75 0 150 24 T300 24 T450 24 T600 24 T750 24 T900 24 T1050 24 T1200 24 V48 H0Z" fill="#3bb4e5"/></svg>
+  </section>
+
+  <div class="wrap">
+    <div class="controls">
+<label class="search">
+        <span style="position:absolute;left:-9999px">Search subjects</span>
+        <input id="q" type="search" placeholder="Search a subject, like Load Testing" autocomplete="off" aria-controls="grid">
+      </label>
+      <button class="chip" id="clearSearch" type="button" hidden>Clear search</button>
+      <div class="chips" role="group" aria-label="Filter by type">
+        <button class="chip" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" data-f="exam" aria-pressed="false">Exams</button>
+        <button class="chip" data-f="quiz" aria-pressed="false">Quizzes</button>
+      </div>
+    </div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </div>
+</main>
+
+<footer>earl41 LMS · Keep your files in the same folders as this page so the images load.</footer>
+
+<dialog id="viewer" aria-label="Image viewer">
+  <div class="viewer">
+    <div class="vtop">
+      <h3 id="vtitle"></h3>
+      <a class="btn" id="vopen" target="_blank" rel="noopener" aria-label="Open image in new tab">↗<span class="lbl">&nbsp;Open</span></a>
+      <button class="btn close" id="vclose" aria-label="Close viewer">✕<span class="lbl">&nbsp;Close</span></button>
+    </div>
+    <div class="stage" id="stage"><img id="vimg" alt=""></div>
+    <div class="vbot">
+      <div class="acts">
+        <button class="btn" id="prev" aria-label="Previous file">‹</button>
+        <button class="btn" id="zoom" aria-label="Toggle full size">⤢<span class="lbl">&nbsp;Zoom</span></button>
+        <button class="btn" id="next" aria-label="Next file">›</button>
+      </div>
+      <div class="tabs" id="tabs" role="tablist"></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* Folder structure: edit here when you add files. */
+const SUBJECTS = [
+  {name:"Capstone Project 1", code:"CP1", dir:"Capstone Project 1", files:["EXAMPCP1.png","QUIZCP1.png"]},
+  {name:"IT Practicum", code:"IT", dir:"IT Practicum", files:["EXAMIT.png","QUIZIT.png"]},
+  {name:"Load Testing", code:"LT", dir:"Load Testing", files:["EXAMLT.png","QUIZLT.png"]},
+  {name:"Mail and Web Services", code:"MWS", dir:"Mail and Web Services", files:["EXAMMWS.png","QUIZMWS.png"]},
+  {name:"Readings in Philippine History", code:"RPH", dir:"Readings in Philippine History", files:["EXAM1RPH.png","EXAM2RPH.png","QUIZRPH.png"]},
+  {name:"Software Engineering 1", code:"SE1", dir:"Software Engineering 1", files:["EXAMSE1.png","QUIZSE1.png"]}
+];
+const ROOT = ""; // set to "earl41lms/" if this page sits outside that folder
+
+const $ = s => document.querySelector(s);
+const grid=$("#grid"), dlg=$("#viewer"), vimg=$("#vimg"), stage=$("#stage");
+let filter="all", query="", cur=null, idx=0;
+const clearSearch = $("#clearSearch");
+
+const typeOf = f => /^EXAM/i.test(f) ? "exam" : "quiz";
+const labelOf = f => { const n=(f.match(/^(?:EXAM|QUIZ)(\d)/i)||[])[1]; return (typeOf(f)==="exam"?"Exam":"Quiz")+(n?" "+n:""); };
+const src = (s,f) => encodeURI(ROOT+s.dir+"/"+f);
+SUBJECTS.forEach(s=>s.items=s.files.map(f=>({file:f,type:typeOf(f),label:labelOf(f),url:src(s,f)})));
+
+/* bubbles in the hero */
+$("#bubbles").innerHTML=Array.from({length:12},(_,i)=>{
+  const sz=14+(i*7)%28;
+  return `<i style="left:${(i*8.7+3)%96}%;width:${sz}px;height:${sz}px;animation-delay:${-(i*1.3)%9}s;animation-duration:${7+(i%5)}s"></i>`;
+}).join("");
+
+const all = SUBJECTS.flatMap(s=>s.items);
+$("#stats").innerHTML =
+  [[SUBJECTS.length,"Subjects"],[all.filter(i=>i.type==="exam").length,"Exam sheets"],[all.filter(i=>i.type==="quiz").length,"Quiz sheets"]]
+  .map(([n,l])=>`<div><strong>${n}</strong><span>${l}</span></div>`).join("");
+
+function render(){
+  const q=query.trim().toLowerCase(); grid.innerHTML="";
+  let shown=0;
+  SUBJECTS.forEach(s=>{
+    if(q && !(s.name+" "+s.code).toLowerCase().includes(q)) return;
+    const items=s.items.filter(i=>filter==="all"||i.type===filter);
+    if(!items.length) return;
+    shown++;
+    const card=document.createElement("article"); card.className="card";
+    card.innerHTML=`<header><div class="patch">${s.code}</div><div><h2>${s.name}</h2><p>${items.length} ${items.length>1?"files":"file"} ready to review</p></div></header><div class="thumbs"></div>`;
+    const box=card.querySelector(".thumbs");
+    items.forEach(it=>{
+      const b=document.createElement("button");
+      b.className="thumb "+it.type; b.type="button";
+      b.setAttribute("aria-label",`Open ${it.label} for ${s.name}`);
+      b.innerHTML=`<img loading="lazy" alt="" src="${it.url}"><span>${it.label}</span>`;
+      b.querySelector("img").onerror=e=>{e.target.remove();b.classList.add("missing");b.insertAdjacentHTML("afterbegin","Image not found")};
+      b.onclick=()=>openViewer(s,s.items.indexOf(it));
+      box.appendChild(b);
+    });
+    grid.appendChild(card);
+  });
+  if(!shown) grid.innerHTML=`<div class="empty">No subject matches that search. Clear the box or switch the filter to All.</div>`;
+}
+
+function openViewer(s,i){ cur=s; if(!dlg.open) dlg.showModal(); show(i); }
+function show(i){
+  idx=(i+cur.items.length)%cur.items.length;
+  const it=cur.items[idx];
+  vimg.src=it.url; vimg.alt=`${it.label} for ${cur.name}`;
+  $("#vtitle").innerHTML=`${cur.name}<small>${it.label}</small>`;
+  $("#vopen").href=it.url;
+  stage.classList.remove("full"); stage.scrollTo(0,0);
+  $("#tabs").innerHTML=cur.items.map((x,n)=>`<button class="tab" role="tab" aria-selected="${n===idx}" data-n="${n}">${x.label}</button>`).join("");
+  $("#prev").hidden=$("#next").hidden=cur.items.length<2;
+}
+$("#tabs").onclick=e=>{const t=e.target.closest(".tab"); if(t) show(+t.dataset.n)};
+$("#prev").onclick=()=>show(idx-1);
+$("#next").onclick=()=>show(idx+1);
+$("#zoom").onclick=vimg.onclick=()=>stage.classList.toggle("full");
+$("#vclose").onclick=()=>dlg.close();
+dlg.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft") show(idx-1);
+  if(e.key==="ArrowRight") show(idx+1);
+});
+let sx=0;
+stage.addEventListener("touchstart",e=>{sx=e.changedTouches[0].clientX},{passive:true});
+stage.addEventListener("touchend",e=>{
+  if(stage.classList.contains("full")) return;
+  const d=e.changedTouches[0].clientX-sx;
+  if(Math.abs(d)>70) show(idx+(d<0?1:-1));
+},{passive:true});
+
+$("#q").addEventListener("input",e=>{
+  query=e.target.value;
+  clearSearch.hidden=!query;
+  render();
+});
+clearSearch.onclick=()=>{
+  $("#q").value="";
+  query="";
+  clearSearch.hidden=true;
+  $("#q").focus();
+  render();
+};
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+  filter=c.dataset.f;
+  document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));
+  render();
+});
+render();
+</script>
+</body>
+</html>
